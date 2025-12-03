@@ -25,6 +25,8 @@ dp = Dispatcher()
 
 users = {}
 
+with open("info.json", "r", encoding="UTF-8") as file:
+    users = json.load(file)
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
@@ -50,8 +52,8 @@ async def echo_handler(message: Message) -> None:
     try:
         # Send a copy of the received message
         await message.answer(f"Учитывай в ответе информацию о пользователе, если скобки пусты, то не учитывай. инфа: ({users[message.from_user.id]})" + gemini.get_info(message.text))
-        with open(f"info.json", "w", encoding="UTF-8") as file:
-            file.write(json.dump(users))
+        with open("info.json", "w", encoding="UTF-8") as file:
+    json.dump(users, file, ensure_ascii=False, indent=4)
     except TypeError:
         # But not all the types is supported to be copied so need to handle it
         await message.answer("Nice try!")
