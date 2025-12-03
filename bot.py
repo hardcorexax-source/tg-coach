@@ -53,7 +53,7 @@ async def echo_handler(message: Message) -> None:
         # Send a copy of the received message
         await message.answer(f"Учитывай в ответе информацию о пользователе, если скобки пусты, то не учитывай. инфа: ({users[message.from_user.id]})" + gemini.get_info(message.text))
         with open("info.json", "w", encoding="UTF-8") as file:
-    json.dump(users, file, ensure_ascii=False, indent=4)
+            json.dump(users, file, ensure_ascii=False, indent=4)
     except TypeError:
         # But not all the types is supported to be copied so need to handle it
         await message.answer("Nice try!")
