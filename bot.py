@@ -23,7 +23,7 @@ from aiogram.types import Message
 
 dp = Dispatcher()
 
-users = set()
+users = {}
 
 
 @dp.message(CommandStart())
@@ -37,8 +37,7 @@ async def command_start_handler(message: Message) -> None:
     # method automatically or call API method directly via
     # Bot instance: `bot.send_message(chat_id=message.chat.id, ...)`
     await message.answer(f"Hello!")
-    with open(f"users/{message.from_user.id}.txt", "w", encoding="UTF-8") as file:
-        file.write("")
+    users[message.from_user.id] = ""
 
 
 @dp.message()
@@ -50,9 +49,9 @@ async def echo_handler(message: Message) -> None:
     """
     try:
         # Send a copy of the received message
-        await message.answer(gemini.get_info(message.text))
-        #with open(f"users/{message.from_user.id}.txt", "r", encoding="UTF-8") as file:
-            #file.write("")
+        await message.answer(f"Учитывай в ответе информацию о пользователе, если скобки пусты, то не учитывай. инфа: ({users[message.from_user.id]})" + gemini.get_info(message.text))
+        with open(f"info.json", "w", encoding="UTF-8") as file:
+            file.write(json.dump(users))
     except TypeError:
         # But not all the types is supported to be copied so need to handle it
         await message.answer("Nice try!")
