@@ -50,9 +50,9 @@ async def echo_handler(message: Message) -> None:
     """
     try:
         # Send a copy of the received message
-        await message.answer(users[message.from_user.id] + gemini.get_info(message.text))
-        with open(f"users/{message.from_user.id}.txt", "r", encoding="UTF-8") as file:
-            file.write("")
+        await message.answer(gemini.get_info(message.text))
+        #with open(f"users/{message.from_user.id}.txt", "r", encoding="UTF-8") as file:
+            #file.write("")
     except TypeError:
         # But not all the types is supported to be copied so need to handle it
         await message.answer("Nice try!")
